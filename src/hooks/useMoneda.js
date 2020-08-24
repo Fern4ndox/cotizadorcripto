@@ -1,5 +1,6 @@
 import React, {Fragment, useState} from 'react';
 import styled from '@emotion/styled'
+import PropTypes from 'prop-types';
 
 //Styled
 //Texto Superior
@@ -53,5 +54,9 @@ const useMoneda = (label, stateInicial, opciones) => {
 
 
 }
- 
+useMoneda.propTypes = {
+    label: PropTypes.string,
+    stateInicial: PropTypes.object.isRequired,
+    opciones: PropTypes.object.isRequired
+};
 export default useMoneda;
