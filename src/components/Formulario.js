@@ -1,7 +1,8 @@
-import React from 'react';
-import styled from '@emotion/styled'
-import useMoneda from '../hooks/useMoneda'
-import useCriptomoneda from '../hooks/useCriptomoneda'
+import React, {useEffect, useState} from 'react';
+import styled from '@emotion/styled';
+import useMoneda from '../hooks/useMoneda';
+import useCriptomoneda from '../hooks/useCriptomoneda';
+import Axios from 'axios';
 
 const Boton = styled.input
 `
@@ -25,6 +26,11 @@ const Boton = styled.input
 `
 
 const Formulario = () => {
+    //State del listado de Criptomonedas
+    const [listacripto, guardarCriptomonedas] = useState([]);
+
+
+    //Array Monedas
     const MONEDAS = 
         [
             {codigo: 'USD', nombre: 'Dolar de Estados Unidos'},
@@ -37,7 +43,20 @@ const Formulario = () => {
     //Usar useMoneda (Hook)
     const [moneda, SelectMoneda] = useMoneda('Elige tu Moneda','', MONEDAS);
     //Usar useCriptomoneda (Hook)
-    const [criptomoneda, SelectCripto] = useCriptomoneda('Elige tu Criptomoneda','')
+    const [criptomoneda, SelectCripto] = useCriptomoneda('Elige tu Criptomoneda','', listacripto);
+    
+    //Llamado a la API
+    useEffect(()=>{
+        const consultarAPI = async ()=>{
+            const url = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD'
+            //Axios para el fetch
+            const resultado = await Axios.get(url);
+            //Almacenar CriptoMonedas en el State
+            guardarCriptomonedas(resultado.data.Data)
+        }
+        consultarAPI();
+    },[]);
+
     return ( 
         <form>
         <SelectMoneda/>
