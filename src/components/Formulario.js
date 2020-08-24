@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styled from '@emotion/styled';
+import Error from './Error'
 import useMoneda from '../hooks/useMoneda';
 import useCriptomoneda from '../hooks/useCriptomoneda';
 import Axios from 'axios';
@@ -25,7 +26,7 @@ const Boton = styled.input
     }
 `
 
-const Formulario = () => {
+const Formulario = ({guardarMoneda, guardarCriptomoneda}) => {
     //State del listado de Criptomonedas
     const [listacripto, guardarCriptomonedas] = useState([]);
 
@@ -40,6 +41,8 @@ const Formulario = () => {
             {codigo: 'GTQ', nombre: 'Quétzal Guatemalteco'}
         ]
 
+    //Errores
+    const [error, guardarError] = useState(false);
     //Usar useMoneda (Hook)
     const [moneda, SelectMoneda] = useMoneda('Elige tu Moneda','', MONEDAS);
     //Usar useCriptomoneda (Hook)
@@ -55,10 +58,30 @@ const Formulario = () => {
             guardarCriptomonedas(resultado.data.Data)
         }
         consultarAPI();
+        
     },[]);
 
-    return ( 
-        <form>
+    //Submit
+    const cotizarMoneda = e =>
+    {
+        e.preventDefault();
+        //Validar si existen datos
+        if(moneda === '' || criptomoneda === '')
+        {
+            guardarError(true);
+            return;
+        }
+        //Datos al Componente Principal
+        guardarError(false);
+        guardarMoneda(moneda);
+        guardarCriptomoneda(criptomoneda);
+    }
+
+    return (  
+        <form
+        onSubmit={cotizarMoneda}
+        >
+            {error ? <Error mensaje="Todos los campos son obligatorios"/>: null}
         <SelectMoneda/>
         <SelectCripto/>
         <Boton

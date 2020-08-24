@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from '@emotion/styled'
 import imagen from './cryptomonedas.png'
 import Formulario from './components/Formulario'
 
-
+//Styled
 const Contenedor = styled.div
 `
 max-width: 900px;
@@ -15,13 +15,11 @@ margin: 0 auto;
   column-gap: 2rem;
 }
 `
-
 const Imagen = styled.img
 `
 max-width: 100%;
 margin-top: 5rem;
 `
-
 const Heading = styled.h1
 `
 font-family: 'Bebas Neue', cursive;
@@ -42,6 +40,17 @@ margin-top: 80px;
 `
 
 function App() {
+
+  //State Moneda
+  const [moneda, guardarMoneda] = useState('');
+  const [criptomoneda, guardarCriptomoneda] = useState('');
+  //Cálculo Moneda a Cripto
+  useEffect(()=>{
+    //Evitar Ejecución
+    if(moneda=== '' && criptomoneda === '') return;
+    console.log('Cotizando')
+  },[moneda, criptomoneda])
+
   return (
     <Contenedor>
       <div>
@@ -54,7 +63,10 @@ function App() {
       <Heading>
         Cotiza Criptomonedas al Instante
       </Heading>
-      <Formulario/>
+      <Formulario
+      guardarMoneda={guardarMoneda}
+      guardarCriptomoneda={guardarCriptomoneda}
+      />
       </div>
     </Contenedor>
    
