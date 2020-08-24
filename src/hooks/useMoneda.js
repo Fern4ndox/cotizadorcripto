@@ -1,4 +1,29 @@
 import React, {Fragment, useState} from 'react';
+import styled from '@emotion/styled'
+
+//Styled
+//Texto Superior
+const Label = styled.label
+`
+    font-family: 'Bebas Neue', cursive;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 2.4rem;
+    margin-top: 2rem;
+    display: block;
+`
+//Dropdown
+const Select = styled.select
+`
+    width: 100%;
+    display: block;
+    padding: 1rem;
+    -webkit-appearance: none;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.2rem;
+`
 
 //Operaciones
 const useMoneda = (label, stateInicial, opciones) => {
@@ -8,8 +33,11 @@ const useMoneda = (label, stateInicial, opciones) => {
     const Seleccionar = () =>
     (
         <Fragment>
-            <label>{label} </label>
-            <select>
+            <Label>{label} </Label>
+            <Select
+                onChange={e => actualizarState(e.target.value)}
+                value={state}
+            >
                 <option value="">--Seleccione Moneda--</option>
                 {
                     opciones.map(opcion =>(
@@ -17,7 +45,7 @@ const useMoneda = (label, stateInicial, opciones) => {
                     ))
                 }
 
-            </select>
+            </Select>
         </Fragment>
     );
     //Retornar State, Interfaz y Func que modifica el State
